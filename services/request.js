@@ -6,9 +6,12 @@ const axios = require('axios')
 
 const check = function (url) {
     const start = new Date()
-    return new Promise(function (resolve, reject) {
+    let newUrl = url
+    if (url.indexOf("http") === -1) {
+        newUrl = 'http://' + newUrl
+    } return new Promise(function (resolve, reject) {
 
-        var link = url
+        var link = newUrl
         const out = {
             url,
             alive: false
@@ -17,7 +20,7 @@ const check = function (url) {
 
             const end = new Date()
             const durationMilli = end - start
-
+            
             const durationNano = durationMilli * 1000000
             if (error) {
                 const end = new Date()
