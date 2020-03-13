@@ -28,7 +28,7 @@ app.post('/api/checkUrl', async (req, res) => {
             if (val.alive) { countSuccess = countSuccess + 1 }
             else { countFail = countFail + 1 }
         }
-        
+
         console.log('Checked webistes: ', listUrlOut.length)
         console.log('Successful websites: ', countSuccess)
         console.log('Failure websites: ', countFail)
@@ -45,6 +45,17 @@ app.post('/api/checkUrl', async (req, res) => {
                 listUrl: listUrlOut
             }
         })
+    } catch (e) {
+        return res.status(500).send({ success: false, message: e.message })
+    }
+
+})
+
+app.post('/api/report', async (req, res) => {
+    try {
+
+        const statusCode = await requestService.reportAPI(req.body.token, req.body.summary)
+        return res.send({ success: true, data: statusCode })
     } catch (e) {
         return res.status(500).send({ success: false, message: e.message })
     }
