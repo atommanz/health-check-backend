@@ -13,10 +13,14 @@ app.post('/api/checkUrl', async (req, res) => {
         }
         console.log('Perform website checking...')
         const start = new Date()
-        const promiseList = req.body.listUrl
+        const listProm = []
+        req.body.listUrl
             .filter(val => (val && val !== 'url'))
-            .map(val => requestService.check(val))
-        const listUrlOut = await Promise.all(promiseList)
+            .map(val => {
+                console.log(listProm.length)
+                listProm.push(requestService.check(val))
+            })
+        const listUrlOut = await Promise.all(listProm)
         console.log('Done!')
 
         const end = new Date()
